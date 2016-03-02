@@ -43,12 +43,21 @@ sudo apt-get install doxygen mono-complete graphviz
 
 # Install openKinect (libFreenect)
 # in libfreenect directory, in the KinectLibs dir
+cd libFreenect
 mkdir build
 cd build
 cmake ..
 make
 sudo make install
 sudo ldconfig /usr/local/lib64/
+
+# Install OpenNI
+cd OpenNI/Platform/Linux/CreateRedist
+chmod 755 RedistMaker
+sudo ./RedistMaker
+cd ../Redist/OpenNI-Bin-Dev-Linux-x64-v1.5.7.10
+sudo ./install.sh
+
 
  
 # Once libFreenect is installed, plug the Kinect, then set permission to R/W on the usb devices (motor and camera).
