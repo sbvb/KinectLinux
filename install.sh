@@ -58,7 +58,12 @@ sudo ./RedistMaker
 cd ../Redist/OpenNI-Bin-Dev-Linux-x64-v1.5.7.10
 sudo ./install.sh
 
-
+# Install SensorKinect
+cd SensorKinect/Platform/Linux/CreateRedist
+chmod 755 RedistMaker
+sudo ./RedistMaker
+cd ../Redist/Sensor-Bin-Linux-x64-v5.1.2.1/
+sudo ./install.sh
  
 # Once libFreenect is installed, plug the Kinect, then set permission to R/W on the usb devices (motor and camera).
 sudo chmod a+rw /dev/bus/usb//
