@@ -39,6 +39,7 @@ sudo apt-get update
 sudo apt-get install sun-java6-jdk
 
 sudo apt-get install doxygen mono-complete graphviz
+sudo apt-get install aplay
 
 
 # edit license file SensorKinect/OpenNI/Data/SamplesConfig.xml
@@ -102,6 +103,8 @@ cd OpenNI/Platform/Linux/Bin/x64-Release
 # building kinectKeyboards
 cd OpenNI/Platform/Linux/Build/Samples/kinectKeyboards
 make
+
+
 
 # the code is in the folde below
 cd OpenNI/Samples/kinectKeyboards
