@@ -41,6 +41,18 @@ sudo apt-get install sun-java6-jdk
 sudo apt-get install doxygen mono-complete graphviz
 
 
+# edit license file SensorKinect/OpenNI/Data/SamplesConfig.xml
+<License vendor=”PrimeSense” key=”0KOIk2JeIBYClPWVnMoRKn5cdY4=”/>
+# sample of modified file
+	<Licenses>
+		<!-- Add application-specific licenses here 
+		<License vendor="vendor" key="key"/>
+		-->		
+		<License vendor=”PrimeSense” key=”0KOIk2JeIBYClPWVnMoRKn5cdY4=”/>
+	</Licenses>
+
+
+
 # Install openKinect (libFreenect)
 # in libfreenect directory, in the KinectLibs dir
 cd libFreenect
@@ -79,6 +91,21 @@ Bus 001 Device 007: ID 045e:02ad Microsoft Corp. Xbox NUI Audio
 # testing 
 cd OpenNI/Platform/Linux/Bin/x64-Release
 ./Sample-NiSimpleViewer
+
+
+# building kinectKeyboards
+cd OpenNI/Platform/Linux/Build/Samples/kinectKeyboards
+make
+
+# the code is in the folde below
+cd OpenNI/Samples/kinectKeyboards
+
+# run sample
+cd OpenNI/Platform/Linux/Bin/x64-Release
+./Sample-kinectKeyboards
+
+
+
 
 
 
