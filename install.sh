@@ -75,6 +75,13 @@ Bus 001 Device 008: ID 045e:02ae Microsoft Corp. Xbox NUI Camera
 Bus 001 Device 006: ID 045e:02b0 Microsoft Corp. Xbox NUI Motor
 Bus 001 Device 007: ID 045e:02ad Microsoft Corp. Xbox NUI Audio
 
+
+# testing 
+cd OpenNI/Platform/Linux/Bin/x64-Release
+./Sample-NiSimpleViewer
+
+
+
 #libusb couldn't open USB device /dev/bus/usb/001/006: Permission denied.
 #libusb requires write access to USB device nodes.
 
