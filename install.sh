@@ -42,7 +42,6 @@ sudo apt-get install doxygen mono-complete graphviz
 
 
 # Install openKinect (libFreenect)
-
 # in libfreenect directory, in the KinectLibs dir
 mkdir build
 cd build
@@ -52,13 +51,15 @@ sudo make install
 sudo ldconfig /usr/local/lib64/
 
  
-
 # Once libFreenect is installed, plug the Kinect, then set permission to R/W on the usb devices (motor and camera).
-
 sudo chmod a+rw /dev/bus/usb//
 sudo chmod a+rw /dev/bus/usb//
 
-lsusb | grep Xbox
+# list usb devices connected
+$ lsusb | grep Xbox
+Bus 001 Device 008: ID 045e:02ae Microsoft Corp. Xbox NUI Camera
+Bus 001 Device 006: ID 045e:02b0 Microsoft Corp. Xbox NUI Motor
+Bus 001 Device 007: ID 045e:02ad Microsoft Corp. Xbox NUI Audio
 
 #libusb couldn't open USB device /dev/bus/usb/001/006: Permission denied.
 #libusb requires write access to USB device nodes.
