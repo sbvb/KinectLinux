@@ -104,6 +104,8 @@ cd OpenNI/Samples/kinectKeyboards
 cd OpenNI/Platform/Linux/Bin/x64-Release
 ./Sample-kinectKeyboards
 
+# extra libs
+https://www.dropbox.com/sh/jsygeyx8dwa49w6/AAA-XmOWcz9svJBZQ_VKMS3ha
 
 
 
