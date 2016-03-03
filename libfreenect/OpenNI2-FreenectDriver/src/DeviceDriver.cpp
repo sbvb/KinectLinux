@@ -17,6 +17,7 @@
 #include <map>
 #include <string>
 #include "Driver/OniDriverAPI.h"
+#include "freenect_internal.h"
 #include "libfreenect.hpp"
 #include "DepthStream.hpp"
 #include "ColorStream.hpp"
@@ -210,7 +211,20 @@ namespace FreenectDriver
   class Driver : public oni::driver::DriverBase, private Freenect::Freenect
   {
   private:
-    std::map<OniDeviceInfo, oni::driver::DeviceBase*> devices;
+    typedef std::map<OniDeviceInfo, oni::driver::DeviceBase*> OniDeviceMap;
+    OniDeviceMap devices;
+
+    static std::string devid_to_uri(int id) {
+      return "freenect://" + to_string(id);
+    }
+
+    static int uri_to_devid(const std::string uri) {
+      int id;
+      std::istringstream is(uri);
+      is.seekg(strlen("freenect://"));
+      is >> id;
+      return id;
+    }
 
   public:
     Driver(OniDriverServices* pDriverServices) : DriverBase(pDriverServices)
@@ -230,8 +244,8 @@ namespace FreenectDriver
       DriverBase::initialize(connectedCallback, disconnectedCallback, deviceStateChangedCallback, pCookie);
       for (int i = 0; i < Freenect::deviceCount(); i++)
       {
-        std::string uri = "freenect://" + to_string(i);
-        
+        std::string uri = devid_to_uri(i);
+
         WriteMessage("Found device " + uri);
         
         OniDeviceInfo info;
@@ -241,13 +255,25 @@ namespace FreenectDriver
         devices[info] = NULL;
         deviceConnected(&info);
         deviceStateChanged(&info, 0);
+
+        freenect_device* dev;
+        if (freenect_open_device(m_ctx, &dev, i) == 0)
+        {
+          info.usbVendorId = dev->usb_cam.VID;
+          info.usbProductId = dev->usb_cam.PID;
+          freenect_close_device(dev);
+        }
+        else
+        {
+          WriteMessage("Unable to open device to query VID/PID");
+        }
       }
       return ONI_STATUS_OK;
     }
 
     oni::driver::DeviceBase* deviceOpen(const char* uri, const char* mode = NULL)
     {
-      for (std::map<OniDeviceInfo, oni::driver::DeviceBase*>::iterator iter = devices.begin(); iter != devices.end(); iter++)
+      for (OniDeviceMap::iterator iter = devices.begin(); iter != devices.end(); iter++)
       {
         if (strcmp(iter->first.uri, uri) == 0) // found
         {
@@ -258,11 +284,7 @@ namespace FreenectDriver
           else 
           {
             WriteMessage("Opening device " + std::string(uri));
-            
-            unsigned int id;
-            std::istringstream is(iter->first.uri);
-            is.seekg(strlen("freenect://"));
-            is >> id;
+            int id = uri_to_devid(iter->first.uri);
             Device* device = &createDevice<Device>(id);
             iter->second = device;
             return device;
@@ -276,23 +298,15 @@ namespace FreenectDriver
 
     void deviceClose(oni::driver::DeviceBase* pDevice)
     {
-      for (std::map<OniDeviceInfo, oni::driver::DeviceBase*>::iterator iter = devices.begin(); iter != devices.end();)
+      for (OniDeviceMap::iterator iter = devices.begin(); iter != devices.end(); iter++)
       {
         if (iter->second == pDevice)
         {
           WriteMessage("Closing device " + std::string(iter->first.uri));
-          
-          unsigned int id;
-          std::istringstream is(std::string(iter->first.uri));
-          is.seekg(strlen("freenect://"));
-          is >> id;
-          devices.erase(iter++);
+          int id = uri_to_devid(iter->first.uri);
+          devices.erase(iter);
           deleteDevice(id);
           return;
-        }
-        else
-        {
-          iter++;
         }
       }
 
@@ -310,8 +324,14 @@ namespace FreenectDriver
 
     void shutdown()
     {
-      for (std::map<OniDeviceInfo, oni::driver::DeviceBase*>::iterator iter = devices.begin(); iter != devices.end(); iter++)
-        deviceClose(iter->second);
+      for (OniDeviceMap::iterator iter = devices.begin(); iter != devices.end(); iter++)
+      {
+        WriteMessage("Closing device " + std::string(iter->first.uri));
+        int id = uri_to_devid(iter->first.uri);
+        deleteDevice(id);
+      }
+
+      devices.clear();
     }
 
 

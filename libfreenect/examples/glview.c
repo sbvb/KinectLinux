@@ -35,14 +35,11 @@
 
 #if defined(__APPLE__)
 #include <GLUT/glut.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
 #else
 #include <GL/glut.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
 #endif
 
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 pthread_t freenect_thread;
@@ -217,24 +214,39 @@ void keyPressed(unsigned char key, int x, int y)
 	if (key == 'e') {
 		static freenect_flag_value auto_exposure = FREENECT_ON;
 		freenect_set_flag(f_dev, FREENECT_AUTO_EXPOSURE, auto_exposure);
-		auto_exposure = !auto_exposure;
+		auto_exposure = auto_exposure ? FREENECT_OFF : FREENECT_ON;
 	}
 	if (key == 'b') {
 		static freenect_flag_value white_balance = FREENECT_ON;
 		freenect_set_flag(f_dev, FREENECT_AUTO_WHITE_BALANCE, white_balance);
-		white_balance = !white_balance;
+		white_balance = white_balance ? FREENECT_OFF : FREENECT_ON;
 	}
 	if (key == 'r') {
 		static freenect_flag_value raw_color = FREENECT_ON;
 		freenect_set_flag(f_dev, FREENECT_RAW_COLOR, raw_color);
-		raw_color = !raw_color;
+		raw_color = raw_color ? FREENECT_OFF : FREENECT_ON;
 	}
 	if (key == 'm') {
 		static freenect_flag_value mirror = FREENECT_ON;
 		freenect_set_flag(f_dev, FREENECT_MIRROR_DEPTH, mirror);
 		freenect_set_flag(f_dev, FREENECT_MIRROR_VIDEO, mirror);
-		mirror = !mirror;
+		mirror = mirror ? FREENECT_OFF : FREENECT_ON;
 	}
+	if (key == 'n') {
+		static freenect_flag_value near_mode = FREENECT_ON;
+		freenect_set_flag(f_dev, FREENECT_NEAR_MODE, near_mode);
+		near_mode = near_mode ? FREENECT_OFF : FREENECT_ON;
+	}
+
+	if (key == '+') {
+		uint16_t brightness = freenect_get_ir_brightness(f_dev) + 2;
+		freenect_set_ir_brightness(f_dev, brightness);
+	}
+	if (key == '-') {
+		uint16_t brightness = freenect_get_ir_brightness(f_dev) - 2;
+		freenect_set_ir_brightness(f_dev, brightness);
+	}
+
 	if (key == '1') {
 		freenect_set_led(f_dev,LED_GREEN);
 	}
@@ -257,6 +269,7 @@ void keyPressed(unsigned char key, int x, int y)
 	if (key == '0') {
 		freenect_set_led(f_dev,LED_OFF);
 	}
+
 	if (key == 'o') {
 	    if (camera_rotate) {
 	        camera_rotate = 0;
@@ -418,9 +431,9 @@ void *freenect_threadfunc(void *arg)
 	freenect_start_depth(f_dev);
 	freenect_start_video(f_dev);
 
-	printf("'w' - tilt up, 's' - level, 'x' - tilt down, '0'-'6' - select LED mode \n");
+	printf("'w' - tilt up, 's' - level, 'x' - tilt down, '0'-'6' - select LED mode, '+' & '-' - change IR intensity \n");
 	printf("'f' - change video format, 'm' - mirror video, 'o' - rotate video with accelerometer \n");
-	printf("'e' - auto exposure, 'b' - white balance, 'r' - raw color \n");
+	printf("'e' - auto exposure, 'b' - white balance, 'r' - raw color, 'n' - near mode (K4W only) \n");
 
 	while (!die && freenect_process_events(f_ctx) >= 0) {
 		//Throttle the text output
