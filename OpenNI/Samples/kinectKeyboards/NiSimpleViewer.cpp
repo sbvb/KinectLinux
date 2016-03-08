@@ -170,7 +170,7 @@ XnStatus SimpleViewer::InitOpenGL(int argc, char **argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowSize(GL_WIN_SIZE_X, GL_WIN_SIZE_Y);
-	glutCreateWindow ("OpenNI Hand Tracker");
+	glutCreateWindow ("kinectKeyboard");
 // 	glutFullScreen();
 	glutSetCursor(GLUT_CURSOR_NONE);
 

@@ -21,6 +21,7 @@
 //---------------------------------------------------------------------------
 // Includes
 //---------------------------------------------------------------------------
+#include <thread>
 #include "NiHandViewer.h"
 #include <iostream>
 #include <stdlib.h>
@@ -78,6 +79,38 @@ XnStatus HandViewer::Run()
 
 	return SimpleViewer::Run(); // Does not return, enters OpenGL main loop instead
 }
+
+void playNote (int file){
+	
+	int out;
+	if (file == 0)
+		out = system("aplay ~/Documents/C1.wav");
+	else if (file == 1)
+		out = system("aplay ~/Documents/C#.wav");
+	else if (file == 2)
+		out = system("aplay ~/Documents/D.wav");
+	else if (file == 3)
+		out = system("aplay ~/Documents/D#.wav");
+	else if (file == 4)
+		out = system("aplay ~/Documents/E.wav");
+	else if (file == 5)
+		out = system("aplay ~/Documents/F.wav");
+	else if (file == 6)
+		out = system("aplay ~/Documents/F#.wav");
+	else if (file == 7)
+		out = system("aplay ~/Documents/G.wav");
+	else if (file == 8)
+		out = system("aplay ~/Documents/G#.wav");
+	else if (file == 9)
+		out = system("aplay ~/Documents/A.wav");
+	else if (file == 10)
+		out = system("aplay ~/Documents/A#.wav");
+	else if (file == 11)
+		out = system("aplay ~/Documents/B.wav");
+	else if (file == 12)
+		out = system("aplay ~/Documents/C2.wav");
+}
+
 void HandViewer::DisplayPostDraw()
 {
 	typedef TrailHistory			History;
@@ -146,72 +179,98 @@ void HandViewer::DisplayPostDraw()
 		// Play Notes
 		//C1
 		if((*handX<GL_WIN_SIZE_X/13)&&(*handY>GL_WIN_SIZE_Y-200)&&(inside==false)){ 
-				int out = system("aplay ~/Documents/C1.wav");
+				//int out = system("aplay ~/Documents/C1.wav");
+				std::thread music(playNote,0);
+				music.detach();
 				inside = true;
 			}
 		//C#
 		else if((*handX>GL_WIN_SIZE_X/13)&&(*handX<2*GL_WIN_SIZE_X/13)&&(*handY>GL_WIN_SIZE_Y-200)&&(inside==false)){
-				int out = system("aplay ~/Documents/C#.wav");
+				//int out = system("aplay ~/Documents/C#.wav");
+				std::thread music(playNote,1);
+				music.detach();
 				inside = true;
 			}
 		//D
 		else if((*handX>2*GL_WIN_SIZE_X/13)&&(*handX<3*GL_WIN_SIZE_X/13)&&(*handY>GL_WIN_SIZE_Y-200)&&(inside==false)){
-				int out = system("aplay ~/Documents/D.wav");
+				//int out = system("aplay ~/Documents/D.wav");
+				std::thread music(playNote,2);
+				music.detach();
 				inside = true;
 			}
 		//D#
 		else if((*handX>3*GL_WIN_SIZE_X/13)&&(*handX<4*GL_WIN_SIZE_X/13)&&(*handY>GL_WIN_SIZE_Y-200)&&(inside==false)){
-				int out = system("aplay ~/Documents/D#.wav");
+				//int out = system("aplay ~/Documents/D#.wav");
+				std::thread music(playNote,3);
+				music.detach();
 				inside = true;
 			}
 		//E
 		else if((*handX>4*GL_WIN_SIZE_X/13)&&(*handX<5*GL_WIN_SIZE_X/13)&&(*handY>GL_WIN_SIZE_Y-200)&&(inside==false)){
-				int out = system("aplay ~/Documents/E.wav");
+				//int out = system("aplay ~/Documents/E.wav");
+				std::thread music(playNote,4);
+				music.detach();
 				inside = true;
 			}
 		//F
 		else if((*handX>5*GL_WIN_SIZE_X/13)&&(*handX<6*GL_WIN_SIZE_X/13)&&(*handY>GL_WIN_SIZE_Y-200)&&(inside==false)){
-				int out = system("aplay ~/Documents/F.wav");
+				//int out = system("aplay ~/Documents/F.wav");
+				std::thread music(playNote,5);
+				music.detach();
 				inside = true;
 			}
 		//F#
 		else if((*handX>6*GL_WIN_SIZE_X/13)&&(*handX<7*GL_WIN_SIZE_X/13)&&(*handY>GL_WIN_SIZE_Y-200)&&(inside==false)){
-				int out = system("aplay ~/Documents/F#.wav");
+				//int out = system("aplay ~/Documents/F#.wav");
+				std::thread music(playNote,6);
+				music.detach();
 				inside = true;
 			}
 		//G
 		else if((*handX>7*GL_WIN_SIZE_X/13)&&(*handX<8*GL_WIN_SIZE_X/13)&&(*handY>GL_WIN_SIZE_Y-200)&&(inside==false)){
-				int out = system("aplay ~/Documents/G.wav");
+				//int out = system("aplay ~/Documents/G.wav");
+				std::thread music(playNote,7);
+				music.detach();
 				inside = true;
 			}
 		//G#
 		else if((*handX>8*GL_WIN_SIZE_X/13)&&(*handX<9*GL_WIN_SIZE_X/13)&&(*handY>GL_WIN_SIZE_Y-200)&&(inside==false)){
-				int out = system("aplay ~/Documents/G#.wav");
+				//int out = system("aplay ~/Documents/G#.wav");
+				std::thread music(playNote,8);
+				music.detach();
 				inside = true;
 			}
 		//A
 		else if((*handX>9*GL_WIN_SIZE_X/13)&&(*handX<10*GL_WIN_SIZE_X/13)&&(*handY>GL_WIN_SIZE_Y-200)&&(inside==false)){
-				int out = system("aplay ~/Documents/A.wav");
+				//int out = system("aplay ~/Documents/A.wav");
+				std::thread music(playNote,9);
+				music.detach();
 				inside = true;
 			}
 		//A#
 		else if((*handX>10*GL_WIN_SIZE_X/13)&&(*handX<11*GL_WIN_SIZE_X/13)&&(*handY>GL_WIN_SIZE_Y-200)&&(inside==false)){
-				int out = system("aplay ~/Documents/A#.wav");
+				//int out = system("aplay ~/Documents/A#.wav");
+				std::thread music(playNote,10);
+				music.detach();
 				inside = true;
 			}
 		//B
 		else if((*handX>11*GL_WIN_SIZE_X/13)&&(*handX<12*GL_WIN_SIZE_X/13)&&(*handY>GL_WIN_SIZE_Y-200)&&(inside==false)){
-				int out = system("aplay ~/Documents/B.wav");
+				//int out = system("aplay ~/Documents/B.wav");
+				std::thread music(playNote,11);
+				music.detach();
 				inside = true;
 			}
 		//C2
 		else if((*handX>12*GL_WIN_SIZE_X/13)&&(*handX<13*GL_WIN_SIZE_X/13)&&(*handY>GL_WIN_SIZE_Y-200)&&(inside==false)){
-				int out = system("aplay ~/Documents/C2.wav");
+				//int out = system("aplay ~/Documents/C2.wav");
+				std::thread music(playNote,12);
+				music.detach();
 				inside = true;
 			}
 		else if((*handY<GL_WIN_SIZE_Y-200)&&(inside==true)){
 				inside = false;
-			}		
+			}	
 		glFlush();
 	}
 }
