@@ -8,15 +8,17 @@ INC_DIRS = \
 
 SRC_FILES = ../../../../../Samples/kinectKeyboards/*.cpp
 
+CFLAGS += -std=c++11 
+
 ifeq ("$(OSTYPE)","Darwin")
-	LDFLAGS += -framework OpenGL -framework GLUT
+	LDFLAGS += -framework OpenGL -framework GLUT -lpthread
 else
-	USED_LIBS += glut GL
+	USED_LIBS += glut GL pthread
 endif
 
 USED_LIBS += OpenNI
 
-EXE_NAME = Sample-kinectKeyboards
+EXE_NAME = kinectKeyboards
 
 include ../../Common/CommonCppMakefile
 
